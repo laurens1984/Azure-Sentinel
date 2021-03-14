@@ -322,7 +322,8 @@
           "type": "string",
           "x-ms-summary": "Description"
         }
-      }
+      },
+      "x-ms-summary": "Messages"
     },
     "ErrorResponse": {
       "type": "object",
@@ -375,7 +376,8 @@
           "type": "string",
           "x-ms-summary": "Self"
         }
-      }
+      },
+      "x-ms-summary": "Links"
     },
     "PagingContainer": {
       "type": "object",
@@ -400,7 +402,8 @@
           "type": "integer",
           "x-ms-summary": "Count"
         }
-      }
+      },
+      "x-ms-summary": "Paging"
     },
     "MetadataUser": {
       "description": "This object defines details about the user.",
@@ -408,20 +411,24 @@
       "properties": {
         "name": {
           "description": "Name of the user.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Name"
         },
         "links": {
           "$ref": "#/definitions/ILinks"
         },
         "id": {
           "description": "The unique UUID of the user",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "ID"
         },
         "type": {
           "description": "The user type (fixed).",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Type"
         }
-      }
+      },
+      "x-ms-summary": "Last user"
     },
     "Domain": {
       "description": "The details about the domain.",
@@ -429,20 +436,24 @@
       "properties": {
         "name": {
           "description": "Name of the domain.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Name"
         },
         "links": {
           "$ref": "#/definitions/ILinks"
         },
         "id": {
           "description": "Unique UUID of this domain",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "ID"
         },
         "type": {
           "description": "Domain type definition (fixed).",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Type"
         }
-      }
+      },
+      "x-ms-summary": "Domain"
     },
     "Readonly": {
       "description": "Defines the read only conditions if the referenced resource is read only.",
@@ -451,17 +462,20 @@
         "reason": {
           "description": "Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).",
           "enum": [
-            "RBAC",
             "SYSTEM",
+            "RBAC",
             "DOMAIN"
           ],
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Reason"
         },
         "state": {
           "description": "True if this resource us read only and false otherwise.",
-          "type": "boolean"
+          "type": "boolean",
+          "x-ms-summary": "State"
         }
-      }
+      },
+      "x-ms-summary": "Read-only"
     },
     "Metadata": {
       "description": "Defines read only details about the object - whether it is system defined, last user who modified the object etc.",
@@ -479,57 +493,105 @@
         "timestamp": {
           "format": "int32",
           "description": "The last updated timestamp.",
-          "type": "integer"
+          "type": "integer",
+          "x-ms-summary": "Timestamp"
         }
-      }
+      },
+      "x-ms-summary": "Metadata"
     },
     "NetworkAddressMetadata": {
       "type": "object",
       "properties": {
+        "lastUser": {
+          "$ref": "#/definitions/MetadataUser"
+        },
+        "domain": {
+          "$ref": "#/definitions/Domain"
+        },
+        "readOnly": {
+          "$ref": "#/definitions/Readonly"
+        },
+        "timestamp": {
+          "format": "int32",
+          "description": "The last updated timestamp.",
+          "type": "integer",
+          "x-ms-summary": "Timestamp"
+        },
         "ipType": {
           "enum": [
             "V_4",
             "V_6"
           ],
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "IP type"
         },
         "parentType": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Parent type"
         }
-      }
+      },
+      "x-ms-summary": "Metadata"
     },
-    "IReference": {
-      "description": "Contains reference information.",
+    "ParentReference": {
       "type": "object",
       "properties": {
         "name": {
           "description": "User chosen resource name.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Name"
         },
         "links": {
           "$ref": "#/definitions/ILinks"
         },
         "id": {
           "description": "Unique identifier representing resource.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "ID"
         },
         "type": {
           "description": "Response object associated with resource.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Type"
         }
-      }
+      },
+      "x-ms-summary": "Parent"
+    },
+    "TargetReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string",
+          "x-ms-summary": "Name"
+        },
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "id": {
+          "description": "Unique identifier representing resource.",
+          "type": "string",
+          "x-ms-summary": "ID"
+        },
+        "type": {
+          "description": "Response object associated with resource.",
+          "type": "string",
+          "x-ms-summary": "Type"
+        }
+      },
+      "x-ms-summary": "Target"
     },
     "IOverride": {
       "description": "Defines the override details for this object.",
       "type": "object",
       "properties": {
         "parent": {
-          "$ref": "#/definitions/IReference"
+          "$ref": "#/definitions/ParentReference"
         },
         "target": {
-          "$ref": "#/definitions/IReference"
+          "$ref": "#/definitions/TargetReference"
         }
-      }
+      },
+      "x-ms-summary": "Overrides"
     },
     "INetworkAddress": {
       "type": "object",
@@ -538,13 +600,16 @@
           "$ref": "#/definitions/NetworkAddressMetadata"
         },
         "overridable": {
-          "type": "boolean"
+          "type": "boolean",
+          "x-ms-summary": "Overridable"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Name"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Description"
         },
         "links": {
           "$ref": "#/definitions/ILinks"
@@ -553,37 +618,33 @@
           "$ref": "#/definitions/IOverride"
         },
         "id": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "ID"
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Type"
         },
         "version": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Version"
         }
-      }
+      },
+      "x-ms-summary": "Objects"
     },
     "INetworkAddressLiteral": {
       "type": "object",
       "properties": {
         "type": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Type"
         },
         "value": {
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Value"
         }
-      }
-    },
-    "Links": {
-      "type": "object",
-      "properties": {
-        "parent": {
-          "type": "string"
-        },
-        "self": {
-          "type": "string"
-        }
-      }
+      },
+      "x-ms-summary": "Literals"
     },
     "NetworkGroup": {
       "description": "A model representing Network group definition.",
@@ -597,48 +658,60 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/INetworkAddress"
-          }
+          },
+          "x-ms-summary": "Objects"
         },
         "literals": {
           "description": "List of network values in group.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/INetworkAddressLiteral"
-          }
+          },
+          "x-ms-summary": "Literals"
         },
         "overridable": {
           "description": "Boolean indicating whether object values can be overridden.",
-          "type": "boolean"
+          "type": "boolean",
+          "x-ms-summary": "Overrideable"
         },
         "name": {
           "description": "User chosen resource name.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Name"
         },
         "description": {
           "description": "User provided resource description.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Description"
         },
         "links": {
-          "$ref": "#/definitions/Links"
+          "$ref": "#/definitions/ILinks"
         },
         "overrides": {
           "$ref": "#/definitions/IOverride"
         },
         "id": {
           "description": "Unique identifier of response object.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "ID"
         },
         "type": {
           "description": "Type associated with resource: NetworkGroup.",
-          "type": "string"
+          "enum": [
+            "NetworkGroup"
+          ],
+          "type": "string",
+          "x-ms-summary": "Type"
         },
         "version": {
           "description": "Version number of the response object.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Version"
         },
         "overrideTargetId": {
           "description": "Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Override target ID"
         }
       }
     },
@@ -655,7 +728,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/NetworkGroup"
-          }
+          },
+          "x-ms-summary": "Network group items"
         }
       }
     }
