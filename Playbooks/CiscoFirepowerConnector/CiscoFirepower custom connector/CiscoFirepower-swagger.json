@@ -17,6 +17,23 @@
           "application/json"
         ],
         "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-auth-access-token": {
+                "description": "Authentication token value",
+                "type": "string"
+              },
+              "X-auth-refresh-token": {
+                "description": "Refresh token value",
+                "type": "string"
+              },
+              "DOMAIN_UUID": {
+                "description": "Domain UUID",
+                "type": "string"
+              }
+            }
+          },
           "204": {
             "description": "Success",
             "headers": {
@@ -76,6 +93,23 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-auth-access-token": {
+                "description": "Authentication token value",
+                "type": "string"
+              },
+              "X-auth-refresh-token": {
+                "description": "Refresh token value",
+                "type": "string"
+              },
+              "DOMAIN_UUID": {
+                "description": "Domain UUID",
+                "type": "string"
+              }
+            }
+          },
           "204": {
             "description": "Success",
             "headers": {
@@ -126,6 +160,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Success"
+          },
           "204": {
             "description": "Success"
           },
@@ -330,11 +367,13 @@
       "properties": {
         "parent": {
           "description": "Full resource URL path to reference the parent (if any) for this resource.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Parent"
         },
         "self": {
           "description": "Full resource URL path to reference this particular resource.",
-          "type": "string"
+          "type": "string",
+          "x-ms-summary": "Self"
         }
       }
     },
