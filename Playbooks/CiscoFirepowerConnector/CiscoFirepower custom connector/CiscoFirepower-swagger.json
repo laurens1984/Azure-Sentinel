@@ -1,0 +1,630 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Cisco Firepower Management Center REST API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/fmc_platform/v1/auth/generatetoken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Generate token",
+        "description": "Firepower Management Center REST API authentication tokens are valid for 30 minutes, and can be refreshed up to three times.",
+        "operationId": "CiscoFmcAuthGenerateTokenV1",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "headers": {
+              "X-auth-access-token": {
+                "description": "Authentication token value",
+                "type": "string"
+              },
+              "X-auth-refresh-token": {
+                "description": "Refresh token value",
+                "type": "string"
+              },
+              "DOMAIN_UUID": {
+                "description": "Domain UUID",
+                "type": "string"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          {
+            "basic_auth": [ ]
+          }
+        ]
+      }
+    },
+    "/api/fmc_platform/v1/auth/refreshtoken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh token",
+        "description": "Firepower Management Center REST API authentication tokens are valid for 30 minutes, and can be refreshed up to three times.",
+        "operationId": "CiscoFmcAuthRefreshTokenV1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-refresh-token",
+            "description": "Refresh token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "headers": {
+              "X-auth-access-token": {
+                "description": "Authentication token value",
+                "type": "string"
+              },
+              "X-auth-refresh-token": {
+                "description": "Refresh token value",
+                "type": "string"
+              },
+              "DOMAIN_UUID": {
+                "description": "Domain UUID",
+                "type": "string"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/fmc_platform/v1/auth/revokeaccess": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Revoke access",
+        "description": "Revoke access for a token",
+        "operationId": "CiscoFmcAuthRevokeAccessV1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/fmc_config/v1/domain/{domainUUID}/object/networkgroups": {
+      "get": {
+        "tags": [
+          "ObjectsNetworkGroups"
+        ],
+        "summary": "Retrieves list of all network group objects",
+        "description": "Retrieves list of all network group objects",
+        "operationId": "CiscoFmcGetObjectNetworkGroupsV1",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domainUUID",
+            "description": "Domain UUID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "description": "To be used in conjunction with <code>\\\"unusedOnly:true\\\"</code> to search for unused objects and <code>\\\"nameOrValue:{nameOrValue}\\\"</code> to search for both name and value.",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "Index of first item to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Number of items to return.",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "expanded",
+            "description": "If set to true, the GET response displays a list of objects with additional attributes.",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroupListContainer"
+            }
+          },
+          "default": {
+            "description": "default",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/fmc_config/v1/domain/{domainUUID}/object/networkgroups/{objectId}": {
+      "get": {
+        "tags": [
+          "ObjectsNetworkGroups"
+        ],
+        "summary": "Retrieves the network group object associated with the specified ID",
+        "description": "Retrieves the network group object associated with the specified ID",
+        "operationId": "CiscoFmcGetObjectNetworkGroupV1",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domainUUID",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "overrideTargetId",
+            "description": "",
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroup"
+            }
+          },
+          "default": {
+            "description": "default",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ErrorMessagesContainer": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "x-ms-summary": "Description"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "enum": [
+            "FRAMEWORK",
+            "OTHER"
+          ],
+          "type": "string",
+          "x-ms-summary": "Category"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ErrorMessagesContainer"
+          },
+          "x-ms-summary": "Messages"
+        },
+        "severity": {
+          "enum": [
+            "ERROR",
+            "WARN"
+          ],
+          "type": "string",
+          "x-ms-summary": "Severity"
+        }
+      },
+      "x-ms-summary": "Error"
+    },
+    "ErrorModel": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/ErrorResponse"
+        }
+      }
+    },
+    "ILinks": {
+      "description": "This defines the self referencing links for the given resource.",
+      "type": "object",
+      "properties": {
+        "parent": {
+          "description": "Full resource URL path to reference the parent (if any) for this resource.",
+          "type": "string"
+        },
+        "self": {
+          "description": "Full resource URL path to reference this particular resource.",
+          "type": "string"
+        }
+      }
+    },
+    "PagingContainer": {
+      "type": "object",
+      "properties": {
+        "pages": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Pages"
+        },
+        "offset": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Offset"
+        },
+        "limit": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Limit"
+        },
+        "count": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Count"
+        }
+      }
+    },
+    "MetadataUser": {
+      "description": "This object defines details about the user.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the user.",
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "id": {
+          "description": "The unique UUID of the user",
+          "type": "string"
+        },
+        "type": {
+          "description": "The user type (fixed).",
+          "type": "string"
+        }
+      }
+    },
+    "Domain": {
+      "description": "The details about the domain.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the domain.",
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "id": {
+          "description": "Unique UUID of this domain",
+          "type": "string"
+        },
+        "type": {
+          "description": "Domain type definition (fixed).",
+          "type": "string"
+        }
+      }
+    },
+    "Readonly": {
+      "description": "Defines the read only conditions if the referenced resource is read only.",
+      "type": "object",
+      "properties": {
+        "reason": {
+          "description": "Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).",
+          "enum": [
+            "RBAC",
+            "SYSTEM",
+            "DOMAIN"
+          ],
+          "type": "string"
+        },
+        "state": {
+          "description": "True if this resource us read only and false otherwise.",
+          "type": "boolean"
+        }
+      }
+    },
+    "Metadata": {
+      "description": "Defines read only details about the object - whether it is system defined, last user who modified the object etc.",
+      "type": "object",
+      "properties": {
+        "lastUser": {
+          "$ref": "#/definitions/MetadataUser"
+        },
+        "domain": {
+          "$ref": "#/definitions/Domain"
+        },
+        "readOnly": {
+          "$ref": "#/definitions/Readonly"
+        },
+        "timestamp": {
+          "format": "int32",
+          "description": "The last updated timestamp.",
+          "type": "integer"
+        }
+      }
+    },
+    "NetworkAddressMetadata": {
+      "type": "object",
+      "properties": {
+        "ipType": {
+          "enum": [
+            "V_4",
+            "V_6"
+          ],
+          "type": "string"
+        },
+        "parentType": {
+          "type": "string"
+        }
+      }
+    },
+    "IReference": {
+      "description": "Contains reference information.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "id": {
+          "description": "Unique identifier representing resource.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Response object associated with resource.",
+          "type": "string"
+        }
+      }
+    },
+    "IOverride": {
+      "description": "Defines the override details for this object.",
+      "type": "object",
+      "properties": {
+        "parent": {
+          "$ref": "#/definitions/IReference"
+        },
+        "target": {
+          "$ref": "#/definitions/IReference"
+        }
+      }
+    },
+    "INetworkAddress": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/NetworkAddressMetadata"
+        },
+        "overridable": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "overrides": {
+          "$ref": "#/definitions/IOverride"
+        },
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "INetworkAddressLiteral": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "Links": {
+      "type": "object",
+      "properties": {
+        "parent": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string"
+        }
+      }
+    },
+    "NetworkGroup": {
+      "description": "A model representing Network group definition.",
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "objects": {
+          "description": "The list of member network objects",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/INetworkAddress"
+          }
+        },
+        "literals": {
+          "description": "List of network values in group.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/INetworkAddressLiteral"
+          }
+        },
+        "overridable": {
+          "description": "Boolean indicating whether object values can be overridden.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string"
+        },
+        "description": {
+          "description": "User provided resource description.",
+          "type": "string"
+        },
+        "links": {
+          "$ref": "#/definitions/Links"
+        },
+        "overrides": {
+          "$ref": "#/definitions/IOverride"
+        },
+        "id": {
+          "description": "Unique identifier of response object.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type associated with resource: NetworkGroup.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version number of the response object.",
+          "type": "string"
+        },
+        "overrideTargetId": {
+          "description": "Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).",
+          "type": "string"
+        }
+      }
+    },
+    "NetworkGroupListContainer": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "$ref": "#/definitions/ILinks"
+        },
+        "paging": {
+          "$ref": "#/definitions/PagingContainer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NetworkGroup"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "basic_auth": {
+      "type": "basic",
+      "description": "Basic Authorization header"
+    }
+  }
+}
