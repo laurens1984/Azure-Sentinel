@@ -178,6 +178,178 @@
         ]
       }
     },
+    "/api/fmc_config/v1/domain/{domainUUID}/object/networkgroups/{objectId}": {
+      "delete": {
+        "tags": [
+          "ObjectsNetworkGroups"
+        ],
+        "summary": "Deletes the network group object associated with the specified ID",
+        "description": "Deletes the network group object associated with the specified ID",
+        "operationId": "CiscoFmcDeleteObjectNetworkGroupV1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domainUUID",
+            "description": "Domain UUID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "description": "Identifier for a network group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroup"
+            }
+          },
+          "default": {
+            "description": "default",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "get": {
+        "tags": [
+          "ObjectsNetworkGroups"
+        ],
+        "summary": "Retrieves the network group object associated with the specified ID",
+        "description": "Retrieves the network group object associated with the specified ID",
+        "operationId": "CiscoFmcGetObjectNetworkGroupV1",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domainUUID",
+            "description": "Domain UUID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "description": "Identifier for a network group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "overrideTargetId",
+            "description": "",
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroup"
+            }
+          },
+          "default": {
+            "description": "default",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ObjectsNetworkGroups"
+        ],
+        "summary": "Modifies the network group object associated with the specified ID",
+        "description": "Modifies the network group object associated with the specified ID",
+        "operationId": "CiscoFmcPutObjectNetworkGroupV1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domainUUID",
+            "description": "Domain UUID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "objectId",
+            "description": "Identifier for a network group",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "X-auth-access-token",
+            "description": "Authentication token value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Input representation of network group",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroupPut"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroup"
+            }
+          },
+          "default": {
+            "description": "default",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
     "/api/fmc_config/v1/domain/{domainUUID}/object/networkgroups": {
       "get": {
         "tags": [
@@ -187,9 +359,7 @@
         "description": "Retrieves list of all network group objects",
         "operationId": "CiscoFmcGetObjectNetworkGroupsV1",
         "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
+          "application/json"
         ],
         "parameters": [
           {
@@ -202,7 +372,7 @@
           {
             "in": "query",
             "name": "filter",
-            "description": "To be used in conjunction with <code>\\\"unusedOnly:true\\\"</code> to search for unused objects and <code>\\\"nameOrValue:{nameOrValue}\\\"</code> to search for both name and value.",
+            "description": "To be used in conjunction with \\\"unusedOnly:true\\\" to search for unused objects and \\\"nameOrValue:{nameOrValue}\\\" to search for both name and value.",
             "type": "string"
           },
           {
@@ -250,40 +420,26 @@
         "security": [
           { }
         ]
-      }
-    },
-    "/api/fmc_config/v1/domain/{domainUUID}/object/networkgroups/{objectId}": {
-      "get": {
+      },
+      "post": {
         "tags": [
           "ObjectsNetworkGroups"
         ],
-        "summary": "Retrieves the network group object associated with the specified ID",
-        "description": "Retrieves the network group object associated with the specified ID",
-        "operationId": "CiscoFmcGetObjectNetworkGroupV1",
+        "summary": "Create the network group object",
+        "description": "Create the network group object",
+        "operationId": "CiscoFmcPostObjectNetworkGroupV1",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
-          "text/plain",
-          "application/json",
-          "text/json"
+          "application/json"
         ],
         "parameters": [
           {
             "in": "path",
             "name": "domainUUID",
-            "description": "",
+            "description": "Domain UUID",
             "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "objectId",
-            "description": "",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "overrideTargetId",
-            "description": "",
             "type": "string"
           },
           {
@@ -292,10 +448,18 @@
             "description": "Authentication token value",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Input representation of network group",
+            "schema": {
+              "$ref": "#/definitions/NetworkGroupPost"
+            }
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "schema": {
               "$ref": "#/definitions/NetworkGroup"
@@ -378,32 +542,6 @@
         }
       },
       "x-ms-summary": "Links"
-    },
-    "PagingContainer": {
-      "type": "object",
-      "properties": {
-        "pages": {
-          "format": "int32",
-          "type": "integer",
-          "x-ms-summary": "Pages"
-        },
-        "offset": {
-          "format": "int32",
-          "type": "integer",
-          "x-ms-summary": "Offset"
-        },
-        "limit": {
-          "format": "int32",
-          "type": "integer",
-          "x-ms-summary": "Limit"
-        },
-        "count": {
-          "format": "int32",
-          "type": "integer",
-          "x-ms-summary": "Count"
-        }
-      },
-      "x-ms-summary": "Paging"
     },
     "MetadataUser": {
       "description": "This object defines details about the user.",
@@ -499,38 +637,41 @@
       },
       "x-ms-summary": "Metadata"
     },
-    "NetworkAddressMetadata": {
+    "NetworkGroupNetworkAddress": {
       "type": "object",
       "properties": {
-        "lastUser": {
-          "$ref": "#/definitions/MetadataUser"
-        },
-        "domain": {
-          "$ref": "#/definitions/Domain"
-        },
-        "readOnly": {
-          "$ref": "#/definitions/Readonly"
-        },
-        "timestamp": {
-          "format": "int32",
-          "description": "The last updated timestamp.",
-          "type": "integer",
-          "x-ms-summary": "Timestamp"
-        },
-        "ipType": {
+        "type": {
           "enum": [
-            "V_4",
-            "V_6"
+            "Network",
+            "NetworkGroup"
           ],
           "type": "string",
-          "x-ms-summary": "IP type"
+          "x-ms-summary": "Type"
         },
-        "parentType": {
+        "name": {
           "type": "string",
-          "x-ms-summary": "Parent type"
+          "x-ms-summary": "Name"
+        },
+        "id": {
+          "type": "string",
+          "x-ms-summary": "ID"
         }
       },
-      "x-ms-summary": "Metadata"
+      "x-ms-summary": "Objects"
+    },
+    "INetworkAddressLiteral": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "x-ms-summary": "Type"
+        },
+        "value": {
+          "type": "string",
+          "x-ms-summary": "Value"
+        }
+      },
+      "x-ms-summary": "Literals"
     },
     "ParentReference": {
       "type": "object",
@@ -593,59 +734,6 @@
       },
       "x-ms-summary": "Overrides"
     },
-    "INetworkAddress": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/NetworkAddressMetadata"
-        },
-        "overridable": {
-          "type": "boolean",
-          "x-ms-summary": "Overridable"
-        },
-        "name": {
-          "type": "string",
-          "x-ms-summary": "Name"
-        },
-        "description": {
-          "type": "string",
-          "x-ms-summary": "Description"
-        },
-        "links": {
-          "$ref": "#/definitions/ILinks"
-        },
-        "overrides": {
-          "$ref": "#/definitions/IOverride"
-        },
-        "id": {
-          "type": "string",
-          "x-ms-summary": "ID"
-        },
-        "type": {
-          "type": "string",
-          "x-ms-summary": "Type"
-        },
-        "version": {
-          "type": "string",
-          "x-ms-summary": "Version"
-        }
-      },
-      "x-ms-summary": "Objects"
-    },
-    "INetworkAddressLiteral": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "x-ms-summary": "Type"
-        },
-        "value": {
-          "type": "string",
-          "x-ms-summary": "Value"
-        }
-      },
-      "x-ms-summary": "Literals"
-    },
     "NetworkGroup": {
       "description": "A model representing Network group definition.",
       "type": "object",
@@ -657,9 +745,10 @@
           "description": "The list of member network objects",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/INetworkAddress"
+            "$ref": "#/definitions/NetworkGroupNetworkAddress"
           },
-          "x-ms-summary": "Objects"
+          "x-ms-summary": "Objects",
+          "x-ms-visibility": "important"
         },
         "literals": {
           "description": "List of network values in group.",
@@ -667,7 +756,8 @@
           "items": {
             "$ref": "#/definitions/INetworkAddressLiteral"
           },
-          "x-ms-summary": "Literals"
+          "x-ms-summary": "Literals",
+          "x-ms-visibility": "important"
         },
         "overridable": {
           "description": "Boolean indicating whether object values can be overridden.",
@@ -677,7 +767,8 @@
         "name": {
           "description": "User chosen resource name.",
           "type": "string",
-          "x-ms-summary": "Name"
+          "x-ms-summary": "Name",
+          "x-ms-visibility": "important"
         },
         "description": {
           "description": "User provided resource description.",
@@ -693,20 +784,17 @@
         "id": {
           "description": "Unique identifier of response object.",
           "type": "string",
-          "x-ms-summary": "ID"
+          "x-ms-summary": "ID",
+          "x-ms-visibility": "important"
         },
         "type": {
           "description": "Type associated with resource: NetworkGroup.",
+          "default": "NetworkGroup",
           "enum": [
             "NetworkGroup"
           ],
           "type": "string",
           "x-ms-summary": "Type"
-        },
-        "version": {
-          "description": "Version number of the response object.",
-          "type": "string",
-          "x-ms-summary": "Version"
         },
         "overrideTargetId": {
           "description": "Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).",
@@ -714,6 +802,155 @@
           "x-ms-summary": "Override target ID"
         }
       }
+    },
+    "ParentReferencePost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string",
+          "x-ms-summary": "Name"
+        },
+        "id": {
+          "description": "Unique identifier representing resource.",
+          "type": "string",
+          "x-ms-summary": "ID"
+        },
+        "type": {
+          "description": "Response object associated with resource.",
+          "type": "string",
+          "x-ms-summary": "Type"
+        }
+      },
+      "x-ms-summary": "Parent"
+    },
+    "TargetReferencePost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string",
+          "x-ms-summary": "Name"
+        },
+        "id": {
+          "description": "Unique identifier representing resource.",
+          "type": "string",
+          "x-ms-summary": "ID"
+        },
+        "type": {
+          "description": "Response object associated with resource.",
+          "type": "string",
+          "x-ms-summary": "Type"
+        }
+      },
+      "x-ms-summary": "Target"
+    },
+    "OverridePost": {
+      "description": "Defines the override details for this object.",
+      "type": "object",
+      "properties": {
+        "parent": {
+          "$ref": "#/definitions/ParentReferencePost"
+        },
+        "target": {
+          "$ref": "#/definitions/TargetReferencePost"
+        }
+      },
+      "x-ms-summary": "Overrides"
+    },
+    "NetworkGroupPut": {
+      "description": "A model representing Network group definition.",
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier of response object.",
+          "type": "string",
+          "x-ms-summary": "ID",
+          "x-ms-visibility": "important"
+        },
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string",
+          "x-ms-summary": "Name",
+          "x-ms-visibility": "important"
+        },
+        "objects": {
+          "description": "The list of member network objects",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NetworkGroupNetworkAddress"
+          },
+          "x-ms-summary": "Objects",
+          "x-ms-visibility": "important"
+        },
+        "literals": {
+          "description": "List of network values in group.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/INetworkAddressLiteral"
+          },
+          "x-ms-summary": "Literals",
+          "x-ms-visibility": "important"
+        },
+        "description": {
+          "description": "User provided resource description.",
+          "type": "string",
+          "x-ms-summary": "Description"
+        },
+        "type": {
+          "description": "Type associated with resource: NetworkGroup.",
+          "default": "NetworkGroup",
+          "enum": [
+            "NetworkGroup"
+          ],
+          "type": "string",
+          "x-ms-summary": "Type"
+        },
+        "overridable": {
+          "description": "Boolean indicating whether object values can be overridden.",
+          "type": "boolean",
+          "x-ms-summary": "Overrideable"
+        },
+        "overrides": {
+          "$ref": "#/definitions/OverridePost"
+        },
+        "overrideTargetId": {
+          "description": "Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).",
+          "type": "string",
+          "x-ms-summary": "Override target ID"
+        }
+      }
+    },
+    "PagingContainer": {
+      "type": "object",
+      "properties": {
+        "pages": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Pages"
+        },
+        "offset": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Offset"
+        },
+        "limit": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Limit"
+        },
+        "count": {
+          "format": "int32",
+          "type": "integer",
+          "x-ms-summary": "Count"
+        }
+      },
+      "x-ms-summary": "Paging"
     },
     "NetworkGroupListContainer": {
       "type": "object",
@@ -730,6 +967,67 @@
             "$ref": "#/definitions/NetworkGroup"
           },
           "x-ms-summary": "Network group items"
+        }
+      }
+    },
+    "NetworkGroupPost": {
+      "description": "A model representing Network group definition.",
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "User chosen resource name.",
+          "type": "string",
+          "x-ms-summary": "Name",
+          "x-ms-visibility": "important"
+        },
+        "objects": {
+          "description": "The list of member network objects",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NetworkGroupNetworkAddress"
+          },
+          "x-ms-summary": "Objects",
+          "x-ms-visibility": "important"
+        },
+        "literals": {
+          "description": "List of network values in group.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/INetworkAddressLiteral"
+          },
+          "x-ms-summary": "Literals",
+          "x-ms-visibility": "important"
+        },
+        "description": {
+          "description": "User provided resource description.",
+          "type": "string",
+          "x-ms-summary": "Description"
+        },
+        "type": {
+          "description": "Type associated with resource: NetworkGroup.",
+          "default": "NetworkGroup",
+          "enum": [
+            "NetworkGroup"
+          ],
+          "type": "string",
+          "x-ms-summary": "Type"
+        },
+        "overridable": {
+          "description": "Boolean indicating whether object values can be overridden.",
+          "type": "boolean",
+          "x-ms-summary": "Overrideable"
+        },
+        "overrides": {
+          "$ref": "#/definitions/OverridePost"
+        },
+        "overrideTargetId": {
+          "description": "Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).",
+          "type": "string",
+          "x-ms-summary": "Override target ID"
         }
       }
     }
