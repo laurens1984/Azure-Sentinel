@@ -868,7 +868,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "description": "Unique identifier of response object.",
+          "description": "Unique identifier of network group.",
           "type": "string",
           "x-ms-summary": "ID",
           "x-ms-visibility": "important"
@@ -880,7 +880,7 @@
           "x-ms-visibility": "important"
         },
         "objects": {
-          "description": "The list of member network objects",
+          "description": "The list of member network objects.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/NetworkGroupNetworkAddress"
@@ -985,7 +985,7 @@
           "x-ms-visibility": "important"
         },
         "objects": {
-          "description": "The list of member network objects",
+          "description": "The list of member network objects.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/NetworkGroupNetworkAddress"
