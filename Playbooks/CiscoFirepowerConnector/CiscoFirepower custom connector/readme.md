@@ -23,11 +23,26 @@ General info about this product and the core values of this integration. <br>
 | **Generate token** | Use the configured basic authentication to start a session and get a token for other actions |
 | **Refresh token** | After 30 minutes a generated token expires and can be renewed with this action |
 | **Revoke access** | This action ends a session and revokes access for a token |
+| **Retrieves list of all FQDN objects** | Action used to get all FQDN objects |
+| **Retrieves the FQDN object associated with the specified ID** | Action used to get a specific FQDN object |
+| **Create the FQDN object** | Action used to create a FQDN object |
+| **MModifies the FQDN object associated with the specified ID** | Action used to modify a specific FQDN object |
+| **Deletes the FQDN object associated with the specified ID** | Action used to delete a specific FQDN object |
+| **Retrieves list of all network objects** | Action used to get all network objects |
+| **Retrieves the network object associated with the specified ID** | Action used to get a specific network object |
+| **Create the network object** | Action used to create a network object |
+| **Modifies the network object associated with the specified ID** | Action used to modify a specific network object |
+| **Deletes the network object associated with the specified ID** | Action used to delete a specific network object |
 | **Retrieves list of all network group objects** | Action used to get all network group objects |
 | **Retrieves the network group object associated with the specified ID** | Action used to get a specific network group object |
 | **Create the network group object** | Action used to create a network group object |
 | **Modifies the network group object associated with the specified ID** | Action used to modify a specific network group object |
 | **Deletes the network group object associated with the specified ID** | Action used to delete a specific network group object |
+| **Retrieves list of all range objects** | Action used to get all range objects |
+| **Retrieves the range object associated with the specified ID** | Action used to get a specific range object |
+| **Create the range object** | Action used to create a range object |
+| **Modifies the range object associated with the specified ID** | Action used to modify a specific range object |
+| **Deletes the range object associated with the specified ID** | Action used to delete a specific range object |
 
 
 <a name="deployment"></a>
