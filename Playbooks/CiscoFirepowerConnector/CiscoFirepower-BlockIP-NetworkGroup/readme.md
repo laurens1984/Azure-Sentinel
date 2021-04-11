@@ -2,11 +2,11 @@
 
 ## Summary
 
-This playbook allows blocking of IPs in Cisco Firepower, using a **Network Group object**. This allows making changes to a Network Group object members, instead of making Access List Entries. The Network Group object itself should be part of an Access List Entries.
+This playbook allows blocking of IPs in Cisco Firepower, using a **Network Group object**. This allows making changes to a Network Group selected members, instead of making Access List Entries. The Network Group object itself should be part of an Access List Entries.
 
-When a new Sentinel incident is created, this playbook gets triggered and performs below actions
-1. For the IPs we check if they are already a member of the Network Group object
-2. For the IPs not already a member of the Network Group object, add it so it gets blocked
+When a new Sentinel incident is created, this playbook gets triggered and performs below actions.
+1. For the IPs we check if they are already selected for the Network Group object
+2. For the IPs not already selected for the Network Group object, add it so it gets blocked
 3. Comment is added to Azure Sentinel incident
     ![playbook overview](./Images/BlockIP-NetworkGroup-AzureSentinel-Comments.png)
 
