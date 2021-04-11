@@ -25,7 +25,7 @@
     },
     "variables": {
         "AzureSentinelConnectionName": "[concat('azuresentinel-', parameters('Playbook Name'))]",
-        "CiscoASAConnectionName": "[concat('ciscofirepowerconnector-', parameters('Playbook Name'))]"
+        "CiscoFirepowerConnectionName": "[concat('ciscofirepowerconnector-', parameters('Playbook Name'))]"
     },
     "resources": [
         {
@@ -43,7 +43,7 @@
         {
             "type": "Microsoft.Web/connections",
             "apiVersion": "2016-06-01",
-            "name": "[variables('CiscoASAConnectionName')]",
+            "name": "[variables('CiscoFirepowerConnectionName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "customParameterValues": {},
@@ -59,7 +59,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/connections', variables('AzureSentinelConnectionName'))]",
-                "[resourceId('Microsoft.Web/connections', variables('CiscoASAConnectionName'))]"
+                "[resourceId('Microsoft.Web/connections', variables('CiscoFirepowerConnectionName'))]"
             ],
             "properties": {
                 "state": "Enabled",
@@ -85,7 +85,7 @@
                                 },
                                 "host": {
                                     "connection": {
-                                        "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                     }
                                 },
                                 "path": "/incident-creation"
@@ -100,7 +100,7 @@
                                 "body": "@triggerBody()?['object']?['properties']?['relatedEntities']",
                                 "host": {
                                     "connection": {
-                                        "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                        "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                     }
                                 },
                                 "method": "post",
@@ -126,7 +126,7 @@
                                             },
                                             "host": {
                                                 "connection": {
-                                                    "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                                    "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                                 }
                                             },
                                             "method": "post",
@@ -189,7 +189,7 @@
                                         },
                                         "host": {
                                             "connection": {
-                                                "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                                "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                             }
                                         },
                                         "method": "post",
@@ -357,7 +357,7 @@
                                         },
                                         "host": {
                                             "connection": {
-                                                "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                                "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                             }
                                         },
                                         "method": "put",
@@ -382,7 +382,7 @@
                                             },
                                             "host": {
                                                 "connection": {
-                                                    "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                                    "name": "@parameters('$connections')['azuresentinel']['connectionId']"
                                                 }
                                             },
                                             "method": "post",
@@ -542,9 +542,9 @@
                                 "connectionName": "[variables('AzureSentinelConnectionName')]",
                                 "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"
                             },
-                            "cisco-ASAv-connector": {
-                                "connectionId": "[resourceId('Microsoft.Web/connections', variables('CiscoASAConnectionName'))]",
-                                "connectionName": "[variables('CiscoASAConnectionName')]",
+                            "Cisco-Firepower-connector": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', variables('CiscoFirepowerConnectionName'))]",
+                                "connectionName": "[variables('CiscoFirepowerConnectionName')]",
                                 "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/customApis/', parameters('Cisco Firepower Connector name'))]"
                             }
                         }
