@@ -1,6 +1,6 @@
 # Cisco Firepower Logic Apps connector
 
-![Cisco Firepower](./CiscoFirepowerCustomConnector.png)<br>
+![Cisco Firepower](../Images/CiscoFirepowerCustomConnector.png)<br>
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -48,13 +48,14 @@ General info about this product and the core values of this integration. <br>
 <a name="deployment"></a>
 
 ## Deployment instructions 
-
-Prior using this custom connector, it should be deployed in the Resource Group where the playbooks that will include it are located.
+Prior using this custom connector, it should be deployed in the Resource Group where the playbooks that will include it are located. There are two options for the custom connector, one not connecting via on-premises data gateway and one connecting via on-premises data gateway.
 <br>
+
+### Connector **not** via on-premises data gateway
 1. Deploy the Custom Connector by clicking on "Deploy to Azure" button. This will take you to deplyoing an ARM Template wizard.
 2. Fill in the required paramteres:
-    * Connector name: Please enter the custom connector(ex:Cisco Firepower connector)
-    * Service Endpoint: The URL to the Cisco Firewall REST API
+    * Connector name: Please enter the custom connector(ex:Cisco ASA connector)
+    * Service Endpoint: The URL to the Cisco ASA REST API
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower%20custom%20connector%2Fazuredeploy.json" target="_blank">
     <img src="https://aka.ms/deploytoazurebutton"/>
@@ -64,9 +65,22 @@ Prior using this custom connector, it should be deployed in the Resource Group w
    <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>    
 </a>
 
+### Connector via on-premises data gateway
+1. Deploy the Custom Connector by clicking on "Deploy to Azure" button. This will take you to deplyoing an ARM Template wizard.
+2. Fill in the required paramteres:
+    * Connector name: Please enter the custom connector(ex:Cisco ASA connector)
+    * Service Endpoint: The URL to the Cisco ASA REST API
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower%20custom%20connector%2Fazuredeploy-gateway.json" target="_blank">
+    <img src="https://aka.ms/deploytoazurebutton"/>
+</a>
+
+<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower%20custom%20connector%2Fazuredeploy-gateway.json" target="_blank">
+   <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>    
+</a>
+
 
 <a name="authentication"></a>
 
 ## Authentication
-This connector supports the following authentication types:
-* Basic Authentication
+In Cisco Firepower create a user and give it the appropriate user role in the domain you want to the playbooks to modify network group objects.
