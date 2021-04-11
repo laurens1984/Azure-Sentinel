@@ -54,8 +54,8 @@ Prior using this custom connector, it should be deployed in the Resource Group w
 ### Connector **not** via on-premises data gateway
 1. Deploy the Custom Connector by clicking on "Deploy to Azure" button. This will take you to deplyoing an ARM Template wizard.
 2. Fill in the required paramteres:
-    * Connector name: Please enter the custom connector(ex:Cisco ASA connector)
-    * Service Endpoint: The URL to the Cisco ASA REST API
+    * Connector name: Please enter the custom connector(ex:Cisco Firepower connector)
+    * Service Endpoint: The URL to the Cisco Firepower REST API
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCustomConnector%2Fazuredeploy.json" target="_blank">
     <img src="https://aka.ms/deploytoazurebutton"/>
@@ -68,8 +68,8 @@ Prior using this custom connector, it should be deployed in the Resource Group w
 ### Connector via on-premises data gateway
 1. Deploy the Custom Connector by clicking on "Deploy to Azure" button. This will take you to deplyoing an ARM Template wizard.
 2. Fill in the required paramteres:
-    * Connector name: Please enter the custom connector(ex:Cisco ASA connector)
-    * Service Endpoint: The URL to the Cisco ASA REST API
+    * Connector name: Please enter the custom connector(ex:Cisco Firepower connector)
+    * Service Endpoint: The URL to the Cisco Firepower REST API
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCustomConnector%2Fazuredeploy-gateway.json" target="_blank">
     <img src="https://aka.ms/deploytoazurebutton"/>
@@ -83,4 +83,4 @@ Prior using this custom connector, it should be deployed in the Resource Group w
 <a name="authentication"></a>
 
 ## Authentication
-In Cisco Firepower create a user and give it the appropriate user role in the domain you want to the playbooks to modify network group objects.
+In Cisco Firepower create a user and give it the appropriate user role in the domain you want the playbooks to modify network group objects in.
