@@ -12,7 +12,7 @@
     "Service Endpoint": {
       "type": "string",
       "metadata": {
-        "description": "URL of the Cisco ASA REST API"
+        "description": "URL of the Cisco Firepower REST API"
       }
     }
   },
