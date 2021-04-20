@@ -1,22 +1,23 @@
-# Cisco Firepower - Add IP Addresses to a Network Group object
+# Cisco Firepower - Add FQDN to a Network Group object
 
 ## Summary
 
-This playbook allows blocking of IPs in Cisco Firepower, using a **Network Group object**. This allows making changes to a Network Group selected members, instead of making Access List Entries. The Network Group object itself should be part of an Access List Entry.
+This playbook allows blocking of FQDNs in Cisco Firepower, using a **Network Group object**. This allows making changes to a Network Group selected members, instead of making Access List Entries. The Network Group object itself should be part of an Access List Entry.
 
-When a new Sentinel incident is created, this playbook gets triggered and performs below actions.
-1. For the IPs we check if they are already selected for the Network Group object
-2. For the IPs not already selected for the Network Group object, add it so it gets blocked
+When a new Sentinel incident is created, this playbook gets triggered and performs the following actions.
+1. For the hosts we check if they are already selected for the Network Group object
+2. For the hosts not already selected for the Network Group object we check if there is an existing FQDN object, if it does not exist we create it
+3. We add the FQDN object to the Network Group object, so it gets blocked
 3. Comment is added to Azure Sentinel incident
-    ![Azure Sentinel comment](./Images/BlockIP-NetworkGroup-AzureSentinel-Comments.png)
+    ![Azure Sentinel comment](./Images/BlockFQDN-NetworkGroup-AzureSentinel-Comments.png)
 
-** IP is added to Cisco Firepower Network Group object:**
+** Host is added to Cisco Firepower Network Group object:**
 
-![Cisco Firepower Network Group object](./Images/BlockIP-NetworkGroup-CiscoFirepowerAdd.png)
+![Cisco Firepower Network Group object](./Images/BlockFQDN-NetworkGroup-CiscoFirepowerAdd.png)
 
 **Plabook overview:**
 
-![Playbook overview](./Images/BlockIP-NetworkGroup-LogicApp.png)
+![Playbook overview](./Images/BlockFQDN-NetworkGroup-LogicApp.png)
 
 
 ### Prerequisites
@@ -27,16 +28,16 @@ When a new Sentinel incident is created, this playbook gets triggered and perfor
 ### Deployment instructions 
 1. Deploy the playbook by clicking on "Depoly to Azure" button. This will take you to deplyoing an ARM Template wizard.
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower-BlockIP-NetworkGroup%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower-BlockFQDN-NetworkGroup%2Fazuredeploy.json" target="_blank">
     <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower-BlockIP-NetworkGroup%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flaurens1984%2FAzure-Sentinel%2Ffeature%2FCiscoFirepowerConnector%2FPlaybooks%2FCiscoFirepowerConnector%2FCiscoFirepower-BlockFQDN-NetworkGroup%2Fazuredeploy.json" target="_blank">
    <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>    
 </a>
 
 2. Fill in the required paramteres:
-    * Playbook Name: Enter the playbook name here (ex:CiscoFirepower-BlockIP-NetworkGroup)
+    * Playbook Name: Enter the playbook name here (ex:CiscoFirepower-BlockFQDN-NetworkGroup)
     * Cisco Firepower Connector name: Enter the name of the Cisco Firepower custom connector (default value:CiscoFirepowerConnector)
     * Network Group object name: The name of the Network Group object.
 
@@ -51,5 +52,5 @@ Once deployment is complete, you will need to authorize each connection.
 6.	Repeat steps for other connections such as Cisco Firepower (For authorizing the Cisco Firepower API connection, the username and password needs to be provided)
 
 #### b. Configurations in Sentinel
-1. In Azure sentinel analytical rules should be configured to trigger an incident with IP Entity.
+1. In Azure sentinel analytical rules should be configured to trigger an incident with Host Entity.
 2. Configure the automation rules to trigger this playbook
