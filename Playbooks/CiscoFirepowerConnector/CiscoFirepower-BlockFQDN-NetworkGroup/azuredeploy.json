@@ -93,7 +93,7 @@
                         }
                     },
                     "actions": {
-                        "Entities_-_Get_Hosts": {
+                        "Entities_-_Get_URLs": {
                             "runAfter": {},
                             "type": "ApiConnection",
                             "inputs": {
@@ -104,19 +104,225 @@
                                     }
                                 },
                                 "method": "post",
-                                "path": "/entities/host"
+                                "path": "/entities/url"
                             }
                         },
-                        "Entities_has_any_Hosts": {
-                            "actions": {},
+                        "Entities_has_any_URLs": {
+                            "actions": {
+                                "For_each_over_URLs": {
+                                    "foreach": "@body('Entities_-_Get_URLs')?['URLs']",
+                                    "actions": {
+                                        "Append_Extracted_domain_to_FQDNs_array_variable": {
+                                            "runAfter": {
+                                                "If_Extract_domain_middle_has_a_path": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "AppendToArrayVariable",
+                                            "inputs": {
+                                                "name": "FQDNs",
+                                                "value": "@variables('Extracted domain')"
+                                            }
+                                        },
+                                        "If_Extract_domain_initial_starts_with_www": {
+                                            "actions": {
+                                                "Set_Extract_domain_middle_variable_without_www": {
+                                                    "runAfter": {},
+                                                    "type": "SetVariable",
+                                                    "inputs": {
+                                                        "name": "Extract domain middle",
+                                                        "value": "@{replace(variables('Extract domain initial'), 'www.', '')}"
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "If_Url_starts_with_https": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "Set_Extract_domain_middle_variable_to_Extract_domain_initial": {
+                                                        "runAfter": {},
+                                                        "type": "SetVariable",
+                                                        "inputs": {
+                                                            "name": "Extract domain middle",
+                                                            "value": "@variables('Extract domain initial')"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "startsWith": [
+                                                            "@variables('Extract domain initial')",
+                                                            "www."
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "type": "If"
+                                        },
+                                        "If_Extract_domain_middle_has_a_path": {
+                                            "actions": {
+                                                "Set_Extracted_domain_variable_without_path": {
+                                                    "runAfter": {},
+                                                    "type": "SetVariable",
+                                                    "inputs": {
+                                                        "name": "Extracted domain",
+                                                        "value": "@{substring(variables('Extract domain middle'), 0, int(indexOf(variables('Extract domain middle'), '/')))}"
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "If_Extract_domain_initial_starts_with_www": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "Set_Extracted_domain_variable_to_Extract_domain_middle": {
+                                                        "runAfter": {},
+                                                        "type": "SetVariable",
+                                                        "inputs": {
+                                                            "name": "Extracted domain",
+                                                            "value": "@variables('Extract domain middle')"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "contains": [
+                                                            "@variables('Extract domain middle')",
+                                                            "/"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "type": "If"
+                                        },
+                                        "If_Url_starts_with_https": {
+                                            "actions": {
+                                                "Set_Extract_domain_initial_variable_without_https": {
+                                                    "runAfter": {},
+                                                    "type": "SetVariable",
+                                                    "inputs": {
+                                                        "name": "Extract domain initial",
+                                                        "value": "@{replace(items('For_each_over_URLs')?['Url'], 'https://', '')}"
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Set_Extracted_domain_variable_to_empty": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "If_Url_starts_with_http": {
+                                                        "actions": {
+                                                            "Set_Extract_domain_initial_variable_without_http": {
+                                                                "runAfter": {},
+                                                                "type": "SetVariable",
+                                                                "inputs": {
+                                                                    "name": "Extract domain initial",
+                                                                    "value": "@{replace(items('For_each_over_URLs')?['Url'], 'http://', '')}"
+                                                                }
+                                                            }
+                                                        },
+                                                        "runAfter": {},
+                                                        "else": {
+                                                            "actions": {
+                                                                "Set_Extract_domain_initial_variable_to_Url": {
+                                                                    "runAfter": {},
+                                                                    "type": "SetVariable",
+                                                                    "inputs": {
+                                                                        "name": "Extract domain initial",
+                                                                        "value": "@{items('For_each_over_URLs')?['Url']}"
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "expression": {
+                                                            "and": [
+                                                                {
+                                                                    "startsWith": [
+                                                                        "@items('For_each_over_URLs')?['Url']",
+                                                                        "http://"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "type": "If"
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "startsWith": [
+                                                            "@items('For_each_over_URLs')?['Url']",
+                                                            "https://"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "type": "If"
+                                        },
+                                        "Set_Extract_domain_initial_variable_to_empty": {
+                                            "runAfter": {},
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "Extract domain initial",
+                                                "value": "''"
+                                            }
+                                        },
+                                        "Set_Extract_domain_middle_variable_to_empty": {
+                                            "runAfter": {
+                                                "Set_Extract_domain_initial_variable_to_empty": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "Extract domain middle",
+                                                "value": "''"
+                                            }
+                                        },
+                                        "Set_Extracted_domain_variable_to_empty": {
+                                            "runAfter": {
+                                                "Set_Extract_domain_middle_variable_to_empty": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "Extracted domain",
+                                                "value": "''"
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {},
+                                    "type": "Foreach",
+                                    "description": "In this for each we go over all the URLs and clean them up. Remove 'https://' or 'http://' form the start, also remove the path. Then we'll be left with a FQDN we store in the FQDNs array.",
+                                    "runtimeConfiguration": {
+                                        "concurrency": {
+                                            "repetitions": 1
+                                        }
+                                    }
+                                }
+                            },
                             "runAfter": {
-                                "Entities_-_Get_Hosts": [
+                                "Initialize_Extracted_domain_variable": [
                                     "Succeeded"
                                 ]
                             },
                             "else": {
                                 "actions": {
-                                    "Add_comment_to_incident_(V3):_No_hosts_found": {
+                                    "Add_comment_to_incident_(V3):_No_URLs_found": {
                                         "runAfter": {},
                                         "type": "ApiConnection",
                                         "inputs": {
@@ -133,17 +339,16 @@
                                             "path": "/Incidents/Comment"
                                         }
                                     },
-                                    "Terminate": {
+                                    "Terminate:_No_URLs_found": {
                                         "runAfter": {
-                                            "Add_comment_to_incident_(V3):_No_hosts_found": [
+                                            "Add_comment_to_incident_(V3):_No_URLs_found": [
                                                 "Succeeded"
                                             ]
                                         },
                                         "type": "Terminate",
                                         "inputs": {
                                             "runStatus": "Cancelled"
-                                        },
-                                        "description": "Since we don't have any IPs, all other actions can be skipped."
+                                        }
                                     }
                                 }
                             },
@@ -151,14 +356,14 @@
                                 "and": [
                                     {
                                         "greater": [
-                                            "@length(body('Entities_-_Get_Hosts')?['Hosts'])",
+                                            "@length(body('Entities_-_Get_URLs')?['URLs'])",
                                             0
                                         ]
                                     }
                                 ]
                             },
                             "type": "If",
-                            "description": "If the Entities does not have any IPs for this incident, we terminate the Logic App"
+                            "description": "If the Entities does not have any URLs for this incident, we terminate the Logic App. If we do have URLs we clean them up to FQDNs."
                         },
                         "Filter_Network_group_object_items_array": {
                             "runAfter": {
@@ -171,7 +376,7 @@
                                 "from": "@body('Retrieves_list_of_all_network_group_objects')?['items']",
                                 "where": "@equals(item()?['name'], variables('Network Group object name'))"
                             },
-                            "description": "The filter with nameOrValue will also return items that start with the name, for example the 'Network Group object name' is 'TEST' and there is a network group object named 'TEST_2' that will also be returned."
+                            "description": "The filter with nameOrValue will also return items that start with the name, for example the 'Network Group Object name' is 'TEST' and there is a network group object named 'TEST_2' that will also be returned."
                         },
                         "Found_the_network_group_object_by_name": {
                             "actions": {
@@ -185,7 +390,7 @@
                                     "inputs": {
                                         "body": {
                                             "incidentArmId": "@triggerBody()?['object']?['id']",
-                                            "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\n<span style=\"font-size: 14px\">The following hosts were found in the Incident:<br>\n</span><span style=\"font-size: 14px\">@{variables('hostsAddressesActionComment')}</span><span style=\"font-size: 14px\"></span></p>"
+                                            "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\n<span style=\"font-size: 14px\">The following hosts were found in the Incident:<br>\n</span><span style=\"font-size: 14px\">@{variables('fqdnActionComment')}</span><span style=\"font-size: 14px\"></span></p>"
                                         },
                                         "host": {
                                             "connection": {
@@ -196,10 +401,10 @@
                                         "path": "/Incidents/Comment"
                                     }
                                 },
-                                "For_each_over_Hosts": {
-                                    "foreach": "@body('Entities_-_Get_Hosts')?['Hosts']",
+                                "For_each_over_FQDNs": {
+                                    "foreach": "@variables('FQDNs')",
                                     "actions": {
-                                        "Filter_Network_Group_Object_Objects_with_Host": {
+                                        "Filter_Network_Group_object_Objects_with_FQDN": {
                                             "runAfter": {
                                                 "Set_FQDN_Name_variable": [
                                                     "Succeeded"
@@ -207,23 +412,23 @@
                                             },
                                             "type": "Query",
                                             "inputs": {
-                                                "from": "@variables('Network Group Object Objects')",
+                                                "from": "@variables('Network Group object Objects')",
                                                 "where": "@and(equals(item()?['type'], 'FQDN'), equals(item()?['name'], variables('fqdnName')))"
                                             }
                                         },
-                                        "If_Network_Group_Object_Objects_contains_Host": {
+                                        "If_Network_Group_object_Objects_contains_FQDN": {
                                             "actions": {
-                                                "Append_to_string_variable_2": {
+                                                "Append_to_fqdnActionComment_string_variable_already_blocked_message": {
                                                     "runAfter": {},
                                                     "type": "AppendToStringVariable",
                                                     "inputs": {
-                                                        "name": "hostsAddressesActionComment",
-                                                        "value": "@{items('For_each_over_Hosts')?['HostName']}.@{items('For_each_over_Hosts')?['DnsDomain']} - is already blocked in Cisco Firepower"
+                                                        "name": "fqdnActionComment",
+                                                        "value": "@{items('For_each_over_FQDNs')} - is already blocked in Cisco Firepower"
                                                     }
                                                 }
                                             },
                                             "runAfter": {
-                                                "Filter_Network_Group_Object_Objects_with_Host": [
+                                                "Filter_Network_Group_object_Objects_with_FQDN": [
                                                     "Succeeded"
                                                 ]
                                             },
@@ -237,8 +442,8 @@
                                                         },
                                                         "type": "AppendToStringVariable",
                                                         "inputs": {
-                                                            "name": "hostsAddressesActionComment",
-                                                            "value": "@{items('For_each_over_Hosts')?['HostName']}.@{items('For_each_over_Hosts')?['DnsDomain']} - blocked in Cisco Firepower\n"
+                                                            "name": "fqdnActionComment",
+                                                            "value": "@{items('For_each_over_FQDNs')} - blocked in Cisco Firepower\n"
                                                         }
                                                     },
                                                     "If_any_FQDN_items_found": {
@@ -297,7 +502,7 @@
                                                                                     "dnsResolution": "IPV4_AND_IPV6",
                                                                                     "name": "@variables('fqdnName')",
                                                                                     "type": "FQDN",
-                                                                                    "value": "@{items('For_each_over_Hosts')?['HostName']}.@{items('For_each_over_Hosts')?['DnsDomain']}"
+                                                                                    "value": "@{items('For_each_over_FQDNs')}"
                                                                                 },
                                                                                 "headers": {
                                                                                     "X-auth-access-token": "@outputs('Generate_token')['headers']['X-auth-access-token']"
@@ -357,7 +562,7 @@
                                                                             "dnsResolution": "IPV4_AND_IPV6",
                                                                             "name": "@variables('fqdnName')",
                                                                             "type": "FQDN",
-                                                                            "value": "@{items('For_each_over_Hosts')?['HostName']}.@{items('For_each_over_Hosts')?['DnsDomain']}"
+                                                                            "value": "@{items('For_each_over_FQDNs')}"
                                                                         },
                                                                         "headers": {
                                                                             "X-auth-access-token": "@outputs('Generate_token')['headers']['X-auth-access-token']"
@@ -410,7 +615,7 @@
                                                 "and": [
                                                     {
                                                         "greater": [
-                                                            "@length(body('Filter_Network_Group_Object_Objects_with_Host'))",
+                                                            "@length(body('Filter_Network_Group_Object_Objects_with_FQDN'))",
                                                             0
                                                         ]
                                                     }
@@ -423,12 +628,12 @@
                                             "type": "SetVariable",
                                             "inputs": {
                                                 "name": "fqdnName",
-                                                "value": "@{concat(variables('fqdnNamePrefix'), items('For_each_over_Hosts')?['HostName'], '.', items('For_each_over_Hosts')?['DnsDomain'])}"
+                                                "value": "@{concat(variables('fqdnNamePrefix'), items('For_each_over_FQDNs'))}"
                                             }
                                         }
                                     },
                                     "runAfter": {
-                                        "Set_Network_Group_Object_Objects_variable": [
+                                        "Set_Network_Group_object_Objects_variable": [
                                             "Succeeded"
                                         ]
                                     },
@@ -441,7 +646,7 @@
                                 },
                                 "Modifies_the_network_group_object_associated_with_the_specified_ID": {
                                     "runAfter": {
-                                        "For_each_over_Hosts": [
+                                        "For_each_over_FQDNs": [
                                             "Succeeded"
                                         ]
                                     },
@@ -485,10 +690,18 @@
                                             }
                                         },
                                         "method": "get",
-                                        "path": "/api/fmc_config/v1/domain/@{encodeURIComponent(outputs('Generate_token')['headers']['DOMAIN_UUID'])}/object/networkgroups/@{encodeURIComponent(variables('Network Group Object')?['id'])}"
+                                        "path": "/api/fmc_config/v1/domain/@{encodeURIComponent(outputs('Generate_token')['headers']['DOMAIN_UUID'])}/object/networkgroups/@{encodeURIComponent(variables('Network Group object')?['id'])}"
                                     }
                                 },
-                                "Set_Network_Group_Object_Objects_variable": {
+                                "Set_Network_Group_Object_variable": {
+                                    "runAfter": {},
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Network Group Object",
+                                        "value": "@body('Filter_Network_group_object_items_array')[0]"
+                                    }
+                                },
+                                "Set_Network_Group_object_Objects_variable": {
                                     "runAfter": {
                                         "Retrieves_the_network_group_object_associated_with_the_specified_ID": [
                                             "Succeeded"
@@ -498,14 +711,6 @@
                                     "inputs": {
                                         "name": "Network Group Object Objects",
                                         "value": "@body('Retrieves_the_network_group_object_associated_with_the_specified_ID')?['objects']"
-                                    }
-                                },
-                                "Set_Network_Group_Object_variable": {
-                                    "runAfter": {},
-                                    "type": "SetVariable",
-                                    "inputs": {
-                                        "name": "Network Group Object",
-                                        "value": "@body('Filter_Network_group_object_items_array')[0]"
                                     }
                                 },
                                 "Update_incident": {
@@ -557,6 +762,37 @@
                                             "method": "post",
                                             "path": "/Incidents/Comment"
                                         }
+                                    },
+                                    "Revoke_access:_Network_Group_object_not_found": {
+                                        "runAfter": {
+                                            "Add_comment_to_incident_(V3):_Network_Group_object_not_found": [
+                                                "Succeeded"
+                                            ]
+                                        },
+                                        "type": "ApiConnection",
+                                        "inputs": {
+                                            "headers": {
+                                                "X-auth-access-token": "@outputs('Generate_token')['headers']['X-auth-access-token']"
+                                            },
+                                            "host": {
+                                                "connection": {
+                                                    "name": "@parameters('$connections')['Cisco-Firepower-connector']['connectionId']"
+                                                }
+                                            },
+                                            "method": "post",
+                                            "path": "/api/fmc_platform/v1/auth/revokeaccess"
+                                        }
+                                    },
+                                    "Terminate:_Network_Group_object_not_found": {
+                                        "runAfter": {
+                                            "Revoke_access:_Network_Group_object_not_found": [
+                                                "Succeeded"
+                                            ]
+                                        },
+                                        "type": "Terminate",
+                                        "inputs": {
+                                            "runStatus": "Cancelled"
+                                        }
                                     }
                                 }
                             },
@@ -574,7 +810,7 @@
                         },
                         "Generate_token": {
                             "runAfter": {
-                                "Initialize_Network_Group_Object_Objects_variable": [
+                                "Initialize_Network_Group_object_Objects_variable": [
                                     "Succeeded"
                                 ]
                             },
@@ -589,9 +825,57 @@
                                 "path": "/api/fmc_platform/v1/auth/generatetoken"
                             }
                         },
+                        "Initialize_Extract_domain_initial_variable": {
+                            "runAfter": {
+                                "Initialize_FQDNs_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Extract domain initial",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_Extract_domain_middle_variable": {
+                            "runAfter": {
+                                "Initialize_Extract_domain_initial_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Extract domain middle",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_Extracted_domain_variable": {
+                            "runAfter": {
+                                "Initialize_Extract_domain_middle_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Extracted domain",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
                         "Initialize_FQDN_name_prefix_variable": {
                             "runAfter": {
-                                "Initialize_Network_Group_Object_name_variable": [
+                                "Initialize_Network_Group_object_name_variable": [
                                     "Succeeded"
                                 ]
                             },
@@ -622,9 +906,9 @@
                                 ]
                             }
                         },
-                        "Initialize_Network_Group_Object_Objects_variable": {
+                        "Initialize_FQDNs_variable": {
                             "runAfter": {
-                                "Initialize_Network_Group_Object_variable": [
+                                "Entities_-_Get_URLs": [
                                     "Succeeded"
                                 ]
                             },
@@ -632,15 +916,32 @@
                             "inputs": {
                                 "variables": [
                                     {
-                                        "name": "Network Group Object Objects",
+                                        "name": "FQDNs",
+                                        "type": "array",
+                                        "value": []
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_Network_Group_object_Objects_variable": {
+                            "runAfter": {
+                                "Initialize_Network_Group_object_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Network Group object Objects",
                                         "type": "array"
                                     }
                                 ]
                             }
                         },
-                        "Initialize_Network_Group_Object_name_variable": {
+                        "Initialize_Network_Group_object_name_variable": {
                             "runAfter": {
-                                "Entities_has_any_Hosts": [
+                                "Entities_has_any_URLs": [
                                     "Succeeded"
                                 ]
                             },
@@ -648,16 +949,16 @@
                             "inputs": {
                                 "variables": [
                                     {
-                                        "name": "Network Group Object name",
+                                        "name": "Network Group object name",
                                         "type": "string",
                                         "value": "@parameters('Network Group Object name')"
                                     }
                                 ]
                             }
                         },
-                        "Initialize_Network_Group_Object_variable": {
+                        "Initialize_Network_Group_object_variable": {
                             "runAfter": {
-                                "Initialize_hostsActionComment_variable": [
+                                "Initialize_fqdnActionComment_variable": [
                                     "Succeeded"
                                 ]
                             },
@@ -665,13 +966,13 @@
                             "inputs": {
                                 "variables": [
                                     {
-                                        "name": "Network Group Object",
+                                        "name": "Network Group object",
                                         "type": "object"
                                     }
                                 ]
                             }
                         },
-                        "Initialize_hostsActionComment_variable": {
+                        "Initialize_fqdnActionComment_variable": {
                             "runAfter": {
                                 "Initialize_FQDN_name_variable": [
                                     "Succeeded"
@@ -681,7 +982,7 @@
                             "inputs": {
                                 "variables": [
                                     {
-                                        "name": "hostsAddressesActionComment",
+                                        "name": "fqdnActionComment",
                                         "type": "string"
                                     }
                                 ]
