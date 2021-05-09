@@ -328,7 +328,7 @@
                                         "inputs": {
                                             "body": {
                                                 "incidentArmId": "@triggerBody()?['object']?['id']",
-                                                "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\nThe incident did not have any entities with hosts.</p>"
+                                                "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\nThe incident did not have any entities with URLs.</p>"
                                             },
                                             "host": {
                                                 "connection": {
@@ -390,7 +390,7 @@
                                     "inputs": {
                                         "body": {
                                             "incidentArmId": "@triggerBody()?['object']?['id']",
-                                            "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\n<span style=\"font-size: 14px\">The following hosts were found in the Incident:<br>\n</span><span style=\"font-size: 14px\">@{variables('fqdnActionComment')}</span><span style=\"font-size: 14px\"></span></p>"
+                                            "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\n<span style=\"font-size: 14px\">The following FQDNs were found in the Incident:<br>\n</span><span style=\"font-size: 14px\">@{variables('fqdnActionComment')}</span><span style=\"font-size: 14px\"></span></p>"
                                         },
                                         "host": {
                                             "connection": {
@@ -724,7 +724,7 @@
                                         "body": {
                                             "classification": {
                                                 "ClassificationAndReason": "True Positive - Suspicious Activity",
-                                                "ClassificationReasonText": "Hosts in incident automaticly blocked"
+                                                "ClassificationReasonText": "URLs/FQDNs in incident automaticly blocked"
                                             },
                                             "incidentArmId": "@triggerBody()?['object']?['id']",
                                             "status": "Closed"

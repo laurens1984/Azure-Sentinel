@@ -5,13 +5,14 @@
 This playbook allows blocking of FQDNs in Cisco Firepower, using a **Network Group object**. This allows making changes to a Network Group selected members, instead of making Access List Entries. The Network Group object itself should be part of an Access List Entry.
 
 When a new Sentinel incident is created, this playbook gets triggered and performs the following actions.
-1. For the hosts we check if they are already selected for the Network Group object
-2. For the hosts not already selected for the Network Group object we check if there is an existing FQDN object, if it does not exist we create it
-3. We add the FQDN object to the Network Group object, so it gets blocked
-3. Comment is added to Azure Sentinel incident
+1. For the URLs of the incident we extract the FQDN
+2. For the FQDNs we check if they are already selected for the Network Group object
+3. For the FQDNs not already selected for the Network Group object we check if there is an existing FQDN object in Cisco Firepower, if it does not exist we create it
+4. We add the FQDN object to the Network Group object, so it gets blocked
+5. Comment is added to Azure Sentinel incident
     ![Azure Sentinel comment](./Images/BlockFQDN-NetworkGroup-AzureSentinel-Comments.png)
 
-** Host is added to Cisco Firepower Network Group object:**
+** FQDN is added to Cisco Firepower Network Group object:**
 
 ![Cisco Firepower Network Group object](./Images/BlockFQDN-NetworkGroup-CiscoFirepowerAdd.png)
 
@@ -52,5 +53,5 @@ Once deployment is complete, you will need to authorize each connection.
 6.	Repeat steps for other connections such as Cisco Firepower (For authorizing the Cisco Firepower API connection, the username and password needs to be provided)
 
 #### b. Configurations in Sentinel
-1. In Azure sentinel analytical rules should be configured to trigger an incident with Host Entity.
+1. In Azure sentinel analytical rules should be configured to trigger an incident with URL Entity.
 2. Configure the automation rules to trigger this playbook
