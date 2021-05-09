@@ -147,7 +147,7 @@
                                             "path": "/Incidents/Comment"
                                         }
                                     },
-                                    "Terminate": {
+                                    "Terminate:_No_IPs_found": {
                                         "runAfter": {
                                             "Add_comment_to_incident_(V3):_No_IPs_found": [
                                                 "Succeeded"
@@ -176,7 +176,7 @@
                         },
                         "Filter_Network_group_object_items_array": {
                             "runAfter": {
-                                "Retrieves_list_of_all_network_group_objects": [
+                                "If_Network_group_object_items_array_is_null": [
                                     "Succeeded"
                                 ]
                             },
@@ -399,7 +399,7 @@
                                             "path": "/api/fmc_platform/v1/auth/revokeaccess"
                                         }
                                     },
-                                    "Terminate_2": {
+                                    "Terminate:_Network_Group_object_not_found": {
                                         "runAfter": {
                                             "Revoke_access:_Network_Group_object_not_found": [
                                                 "Succeeded"
@@ -407,7 +407,10 @@
                                         },
                                         "type": "Terminate",
                                         "inputs": {
-                                            "runStatus": "Cancelled"
+                                            "runError": {
+                                                "message": "Network Group object not found"
+                                            },
+                                            "runStatus": "Failed"
                                         }
                                     }
                                 }
@@ -440,6 +443,77 @@
                                 "method": "post",
                                 "path": "/api/fmc_platform/v1/auth/generatetoken"
                             }
+                        },
+                        "If_Network_group_object_items_array_is_null": {
+                            "actions": {
+                                "Add_comment_to_incident_(V3):_Network_Group_object_not_found_2": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "incidentArmId": "@triggerBody()?['object']?['id']",
+                                            "message": "<p><span style=\"font-size: 16px\"><strong>Cisco Firepower playbook run summary</strong></span><br>\nWe could not find the Network Group object with name: '@{variables('Network Group object name')}'</p>"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azuresentinel']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/Incidents/Comment"
+                                    }
+                                },
+                                "Revoke_access:_Network_Group_object_not_found_2": {
+                                    "runAfter": {
+                                        "Add_comment_to_incident_(V3):_Network_Group_object_not_found_2": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "headers": {
+                                            "X-auth-access-token": "@outputs('Generate_token')['headers']['X-auth-access-token']"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['CiscoFirepowerConnector']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/api/fmc_platform/v1/auth/revokeaccess"
+                                    }
+                                },
+                                "Terminate:_Network_Group_object_not_found_2": {
+                                    "runAfter": {
+                                        "Revoke_access:_Network_Group_object_not_found_2": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Terminate",
+                                    "inputs": {
+                                        "runError": {
+                                            "message": "Network Group object not found"
+                                        },
+                                        "runStatus": "Failed"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Retrieves_list_of_all_network_group_objects": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "equals": [
+                                            "",
+                                            ""
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
                         },
                         "If_PostToTeams_submit_action_is_Submit": {
                             "actions": {
